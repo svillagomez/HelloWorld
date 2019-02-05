@@ -6,6 +6,7 @@ import (
 
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
 	"github.com/TIBCOSoftware/flogo-contrib/action/flow/test"
+	"github.com/stretchr/testify/assert"
 )
 
 var activityMetadata *activity.Metadata
@@ -48,8 +49,11 @@ func TestEval(t *testing.T) {
 	tc := test.NewTestActivityContext(getActivityMetadata())
 
 	//setup attrs
-
-	act.Eval(tc)
+    tc.SetInput("name", "Leon")
+    tc.SetInput("salutation", "Hello")
+    act.Eval(tc)
 
 	//check result attr
+	result := tc.GetOutput("result")
+    assert.Equal(t, result, "The Flogo engine says Hello to Flogo Dev")
 }

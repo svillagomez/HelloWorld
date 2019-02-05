@@ -3,17 +3,21 @@
   "version": "0.0.1",
   "type": "flogo:activity",
   "description": "activity description",
-  "ref": "github.com/yourusername/yourrepository",
-  "author": "Your Name <you.name@example.org>",
+  "ref": "github.com/svillagomez/HelloWorld",
+  "author": "Your Name <sanvilla312@hotmail.com>",
   "inputs":[
     {
-      "name": "input",
+      "name": "salutation",
+      "type": "string"
+    },
+    {
+      "name": "name",
       "type": "string"
     }
   ],
   "outputs": [
     {
-      "name": "output",
+      "name": "result",
       "type": "string"
     }
   ]

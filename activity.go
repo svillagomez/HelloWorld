@@ -3,8 +3,7 @@ package HelloWorld
 import (
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
-	"io/ioutil"
-	"net/http"
+	"gopkg.in/resty.v1"
 	"os"
 )
 
@@ -33,23 +32,19 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 	log.Infof("The Flogo engine says [%s] to [%s]", salutation, name)
 	context.SetOutput("result", "The Flogo engine says "+salutation+" to "+name)
 
-	req, _ := http.NewRequest("GET", "https://slack.com/api/users.list", nil)
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	q := req.URL.Query()
-	q.Add("token", os.Getenv("SLACK_XOXP_TOKEN"))
-	q.Add("pretty", "1")
-	req.URL.RawQuery = q.Encode()
 
-	log.Infof("La request es [%s]", req.URL.String())
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := resty.R().
+		SetQueryParams(map[string]string{
+			"token": os.Getenv("SLACK_XOXP_TOKEN"),
+			"pretty": "1",
+		}).
+		SetHeader("Accept", "application/x-www-form-urlencoded").
+		Get("https://slack.com/api/users.list")
 	if err != nil {
 		log.Infof("Error on response.\n[ERRO] -", err)
-		log.Infof("LA RESPONSE", resp)
 	}
-	body, _ := ioutil.ReadAll(resp.Body)
-	log.Infof("Response from slack [%s]", string([]byte(body)))
+
+	log.Infof("LA RESPONSE SFVC", resp)
 
 	return true, nil
 }

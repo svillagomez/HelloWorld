@@ -46,6 +46,7 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Infof("Error on response.\n[ERRO] -", err)
+		log.Infof("LA RESPONSE", resp)
 	}
 	body, _ := ioutil.ReadAll(resp.Body)
 	log.Infof("Response from slack [%s]", string([]byte(body)))

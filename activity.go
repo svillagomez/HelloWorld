@@ -33,10 +33,13 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 	context.SetOutput("result", "The Flogo engine says "+salutation+" to "+name)
 
 	req, _ := http.NewRequest("GET", "https://slack.com/api/users.list", nil)
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	q := req.URL.Query()
 	q.Add("token", "xoxp-539270626848-539900207523-540778240739-edfae5fc0b4dda7d30e144e104be3c5dg")
 	q.Add("pretty", "1")
 	req.URL.RawQuery = q.Encode()
+
+	log.Infof("La request es [%s]", req.URL.String())
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
